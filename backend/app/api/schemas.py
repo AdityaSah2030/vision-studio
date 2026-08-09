@@ -15,9 +15,15 @@ EnrollmentPose = Literal[
 
 
 class EnrollmentUserCreate(BaseModel):
-    name: str = Field(min_length=1, max_length=100)
+    name: str = Field(
+        min_length=1,
+        max_length=100,
+    )
     email: EmailStr
-    phone: str = Field(min_length=7, max_length=20)
+    phone: str = Field(
+        min_length=7,
+        max_length=20,
+    )
     date_of_birth: date
 
 
@@ -27,3 +33,12 @@ class EnrollmentUserResponse(BaseModel):
     email: EmailStr
     phone: str
     date_of_birth: date
+
+
+class RecognitionResponse(BaseModel):
+    recognized: bool
+    user_id: int | None
+    name: str | None
+    similarity: float
+    best_similarity: float
+    pose: str | None

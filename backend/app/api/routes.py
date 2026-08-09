@@ -1,28 +1,26 @@
 import cv2
 import numpy as np
 
-from fastapi import File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy import select
-
-from backend.app.api.schemas import EnrollmentPose
-from backend.app.cv.face_analyzer import FaceAnalyzer
-from backend.app.db.models import FaceEmbedding
-
-from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from backend.app.api.schemas import (
+    EnrollmentPose,
     EnrollmentUserCreate,
     EnrollmentUserResponse,
+    RecognitionResponse,
 )
-from backend.app.db.models import User
+from backend.app.cv.database_recognition import DatabaseRecognizer
+from backend.app.cv.face_analyzer import FaceAnalyzer
+from backend.app.db.models import FaceEmbedding, User
 from backend.app.db.session import get_db
-
 
 router = APIRouter(prefix="/api")
 
 face_analyzer = FaceAnalyzer()
+database_recognizer = DatabaseRecognizer()
 
 
 @router.get("/health")
@@ -62,6 +60,7 @@ def create_enrollment_user(
             status_code=409,
             detail="A user with this email or phone already exists.",
         )
+    return user
 
 
 @router.post("/enrollment/{user_id}/embedding")
@@ -169,4 +168,79 @@ async def enroll_face_embedding(
         "pose": pose,
         "embedding_id": face_embedding.id,
     }
-    return user
+    
+
+@router.post(
+    "/recognition",
+    response_model=RecognitionResponse,
+)
+async def recognize_face(
+    image: UploadFile = File(...),
+):
+    image_bytes = await image.read()
+
+    if not image_bytes:
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded image is empty.",
+        )
+
+    frame = cv2.imdecode(
+        np.frombuffer(
+            image_bytes,
+            dtype=np.uint8,
+        ),
+        cv2.IMREAD_COLOR,
+    )
+
+    if frame is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Could not decode the uploaded image.",
+        )
+
+    faces = face_analyzer.analyze(frame)
+
+    if len(faces) == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="No face detected.",
+        )
+
+    if len(faces) > 1:
+        raise HTTPException(
+            status_code=400,
+            detail="Multiple faces detected. Please provide an image with exactly one face.",
+        )
+
+    face = faces[0]
+
+    embedding = face.normed_embedding
+
+    if embedding is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Could not generate a face embedding.",
+        )
+
+    embedding = np.asarray(
+        embedding,
+        dtype=np.float32,
+    )
+
+    if embedding.shape != (512,):
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unexpected embedding shape: {embedding.shape}",
+        )
+
+    result = database_recognizer.recognize(embedding)
+
+    return RecognitionResponse(
+        recognized=result.name is not None,
+        user_id=result.user_id,
+        name=result.name,
+        similarity=result.similarity,
+        best_similarity=result.best_similarity,
+        pose=result.pose,
+    )

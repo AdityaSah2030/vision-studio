@@ -143,3 +143,11 @@ class FaceRecognizer:
             top_k_similarity=best_top_k_similarity,
             recognized=recognized,
         )
+
+class RecognitionResponse(BaseModel):
+    recognized: bool
+    user_id: int | None
+    name: str | None
+    similarity: float
+    best_similarity: float
+    pose: str | None
