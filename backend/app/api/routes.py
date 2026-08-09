@@ -15,6 +15,13 @@ from backend.app.db.session import get_db
 from backend.app.services.enrollment_service import EnrollmentService
 from backend.app.services.recognition_service import RecognitionService
 
+from backend.app.services.exceptions import (
+    DuplicatePoseError,
+    FaceDetectionError,
+    InvalidImageError,
+    UserNotFoundError,
+)
+
 
 router = APIRouter(prefix="/api")
 
@@ -90,7 +97,22 @@ async def enroll_face_embedding(
             image_bytes=image_bytes,
         )
 
-    except ValueError as exc:
+    except UserNotFoundError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        )
+
+    except DuplicatePoseError as exc:
+        raise HTTPException(
+            status_code=409,
+            detail=str(exc),
+        )
+
+    except (
+        InvalidImageError,
+        FaceDetectionError,
+    ) as exc:
         raise HTTPException(
             status_code=400,
             detail=str(exc),
@@ -118,7 +140,22 @@ async def recognize_face(
             image_bytes=image_bytes,
         )
 
-    except ValueError as exc:
+    except UserNotFoundError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        )
+
+    except DuplicatePoseError as exc:
+            raise HTTPException(
+            status_code=409,
+            detail=str(exc),
+        )
+
+    except (
+        InvalidImageError,
+        FaceDetectionError,
+    ) as exc:
         raise HTTPException(
             status_code=400,
             detail=str(exc),

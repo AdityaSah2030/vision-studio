@@ -9,6 +9,13 @@ from backend.app.cv.face_analyzer import FaceAnalyzer
 from backend.app.db.models import FaceEmbedding, User
 
 
+from backend.app.services.exceptions import (
+    DuplicatePoseError,
+    FaceDetectionError,
+    InvalidImageError,
+    UserNotFoundError,
+)
+
 class EnrollmentService:
     """Handle user face enrollment operations."""
 
@@ -27,7 +34,7 @@ class EnrollmentService:
         user = db.get(User, user_id)
 
         if user is None:
-            raise ValueError("User not found.")
+            raise UserNotFoundError("User not found.")
 
         existing_embedding = db.scalar(
             select(FaceEmbedding).where(
@@ -37,12 +44,12 @@ class EnrollmentService:
         )
 
         if existing_embedding is not None:
-            raise ValueError(
+            raise DuplicatePoseError(
                 f"Pose '{pose}' has already been enrolled for this user."
             )
 
         if not image_bytes:
-            raise ValueError("Uploaded image is empty.")
+            raise InvalidImageError("Uploaded image is empty.")
 
         frame = cv2.imdecode(
             np.frombuffer(
@@ -53,17 +60,15 @@ class EnrollmentService:
         )
 
         if frame is None:
-            raise ValueError(
-                "Could not decode the uploaded image."
-            )
+            raise FaceDetectionError("No face detected.")
 
         faces = self.face_analyzer.analyze(frame)
 
         if len(faces) == 0:
-            raise ValueError("No face detected.")
+            raise FaceDetectionError("No face detected.")
 
         if len(faces) > 1:
-            raise ValueError(
+            raise FaceDetectionError(
                 "Multiple faces detected. "
                 "Please provide an image with exactly one face."
             )
