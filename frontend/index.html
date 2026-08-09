@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Vision Studio is a computer vision platform for real-time face recognition and multi-pose face enrollment."
+    >
+
+    <meta
+        name="theme-color"
+        content="#F8FAFC"
+    >
+
+    <title>Vision Studio</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <!-- Main Stylesheet -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+</head>
+
+<body>
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header class="site-header">
+        <div class="container">
+
+            <nav
+                class="navbar"
+                aria-label="Main navigation"
+            >
+
+                <!-- Logo -->
+                <a
+                    href="#home"
+                    class="logo"
+                    aria-label="Vision Studio Home"
+                >
+                    Vision Studio<span>.</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="nav-links">
+
+                    <a
+                        href="#home"
+                        class="nav-link active"
+                    >
+                        Home
+                    </a>
+
+                    <a
+                        href="#recognition"
+                        class="nav-link"
+                    >
+                        Recognition
+                    </a>
+
+                    <a
+                        href="#enrollment"
+                        class="nav-link"
+                    >
+                        Enrollment
+                    </a>
+
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="nav-controls">
+
+                    <button
+                        type="button"
+                        id="theme-toggle"
+                        class="theme-toggle"
+                        aria-label="Toggle dark mode"
+                        title="Toggle theme"
+                    >
+                        <i class="fas fa-moon" aria-hidden="true"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="mobile-menu-btn"
+                        aria-label="Toggle navigation menu"
+                        aria-expanded="false"
+                        aria-controls="nav-menu"
+                    >
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main>
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+
+                    <p class="eyebrow">
+                        COMPUTER VISION PLATFORM
+                    </p>
+
+                    <h1 class="hero-title">
+                        See. Recognize.
+                        <span>Understand.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Real-time face recognition and enrollment
+                        powered by computer vision and AI.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#recognition" class="btn btn-primary">
+                            Start Recognition
+                        </a>
+
+                        <a href="#enrollment" class="btn btn-secondary">
+                            Enroll a User
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =====================================================
+             RECOGNITION
+        ====================================================== -->
+
+        <section
+            id="recognition"
+            class="section recognition-section"
+        >
+
+            <div class="container">
+
+                <!-- Section Heading -->
+
+                <div class="section-heading">
+
+                    <p class="eyebrow">
+                        RECOGNITION
+                    </p>
+
+                    <h2 class="section-title">
+                        Identify a face.
+                    </h2>
+
+                    <span
+                        class="section-line"
+                        aria-hidden="true"
+                    ></span>
+
+                    <p class="section-description">
+                        Use your camera or upload an image to
+                        recognize an enrolled user.
+                    </p>
+
+                </div>
+
+
+                <!-- Recognition Workspace -->
+
+                <div class="workspace-card recognition-workspace">
+
+                    <div class="workspace-grid">
+
+                        <!-- Camera / Preview -->
+
+                        <div class="camera-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <h3>Camera</h3>
+
+                                    <p>
+                                        Position your face inside
+                                        the frame.
+                                    </p>
+                                </div>
+
+                                <span
+                                    id="camera-status"
+                                    class="status-badge"
+                                >
+                                    Ready
+                                </span>
+
+                            </div>
+
+
+                            <div class="camera-frame">
+
+                                <video
+                                    id="recognition-video"
+                                    class="camera-video"
+                                    autoplay
+                                    muted
+                                    playsinline
+                                    aria-label="Recognition camera preview"
+                                ></video>
+
+                                <img
+                                    id="recognition-preview"
+                                    class="image-preview"
+                                    alt="Selected recognition image preview"
+                                    hidden
+                                >
+
+                                <div
+                                    id="camera-placeholder"
+                                    class="camera-placeholder"
+                                >
+                                    <i
+                                        class="fas fa-camera"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <strong>
+                                        Camera Workspace
+                                    </strong>
+
+                                    <span>
+                                        Camera preview will appear here.
+                                    </span>
+                                </div>
+
+                                <div
+                                    class="face-guide"
+                                    aria-hidden="true"
+                                ></div>
+
+                            </div>
+
+
+                            <!-- Camera Controls -->
+
+                            <div class="camera-controls">
+
+                                <button
+                                    type="button"
+                                    id="start-camera-btn"
+                                    class="btn btn-primary"
+                                >
+                                    <i
+                                        class="fas fa-video"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    Start Camera
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="capture-btn"
+                                    class="btn btn-secondary"
+                                    disabled
+                                >
+                                    <i
+                                        class="fas fa-camera"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    Capture
+                                </button>
+
+                            </div>
+
+
+                            <!-- Image Upload -->
+
+                            <div class="upload-area">
+
+                                <input
+                                    type="file"
+                                    id="recognition-image"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    hidden
+                                >
+
+                                <label
+                                    for="recognition-image"
+                                    class="upload-dropzone"
+                                >
+
+                                    <i
+                                        class="fas fa-cloud-arrow-up"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <strong>
+                                        Upload an image
+                                    </strong>
+
+                                    <span>
+                                        JPG, PNG or WebP
+                                    </span>
+
+                                    <small id="recognition-file-name">
+                                        No file selected
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Recognition Result -->
+
+                        <aside class="result-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <h3>Recognition Result</h3>
+
+                                    <p>
+                                        Recognition details will
+                                        appear here.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                id="recognition-result"
+                                class="result-card"
+                            >
+
+                                <div class="result-placeholder">
+
+                                    <div class="result-icon">
+                                        <i
+                                            class="fas fa-user-check"
+                                            aria-hidden="true"
+                                        ></i>
+                                    </div>
+
+                                    <strong>
+                                        No recognition yet
+                                    </strong>
+
+                                    <span>
+                                        Capture or upload an image
+                                        to begin.
+                                    </span>
+
+                                </div>
+
+
+                                <!-- Actual result -->
+
+                                <div
+                                    id="recognition-details"
+                                    class="recognition-details"
+                                    hidden
+                                >
+
+                                    <div class="result-status">
+                                        <span
+                                            id="recognition-status"
+                                            class="status-badge"
+                                        >
+                                            Recognized
+                                        </span>
+                                    </div>
+
+                                    <div class="recognized-user">
+
+                                        <span class="result-label">
+                                            User
+                                        </span>
+
+                                        <strong
+                                            id="recognized-name"
+                                        >
+                                            --
+                                        </strong>
+
+                                        <span
+                                            id="recognized-user-id"
+                                            class="muted-text"
+                                        >
+                                            User ID: --
+                                        </span>
+
+                                    </div>
+
+                                    <div class="confidence-grid">
+
+                                        <div class="metric">
+
+                                            <span>
+                                                Similarity
+                                            </span>
+
+                                            <strong
+                                                id="recognition-similarity"
+                                            >
+                                                --
+                                            </strong>
+
+                                        </div>
+
+                                        <div class="metric">
+
+                                            <span>
+                                                Best Match
+                                            </span>
+
+                                            <strong
+                                                id="recognition-best-similarity"
+                                            >
+                                                --
+                                            </strong>
+
+                                        </div>
+
+                                        <div class="metric">
+
+                                            <span>
+                                                Pose
+                                            </span>
+
+                                            <strong
+                                                id="recognition-pose"
+                                            >
+                                                --
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                id="recognize-btn"
+                                class="btn btn-primary btn-full"
+                                disabled
+                            >
+                                <i
+                                    class="fas fa-wand-magic-sparkles"
+                                    aria-hidden="true"
+                                ></i>
+
+                                Recognize Face
+                            </button>
+
+
+                            <p
+                                id="recognition-message"
+                                class="form-message"
+                                role="status"
+                                aria-live="polite"
+                            ></p>
+
+                        </aside>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ENROLLMENT
+        ====================================================== -->
+
+        <section
+            id="enrollment"
+            class="section enrollment-section"
+        >
+
+            <div class="container">
+
+                <!-- Section Heading -->
+
+                <div class="section-heading">
+
+                    <p class="eyebrow">
+                        ENROLLMENT
+                    </p>
+
+                    <h2 class="section-title">
+                        Add a new user.
+                    </h2>
+
+                    <span
+                        class="section-line"
+                        aria-hidden="true"
+                    ></span>
+
+                    <p class="section-description">
+                        Create a user profile and enroll multiple
+                        facial poses for reliable recognition.
+                    </p>
+
+                </div>
+
+
+                <!-- Enrollment Workspace -->
+
+                <div class="workspace-card enrollment-workspace">
+
+                    <div class="enrollment-grid">
+
+                        <!-- User Information -->
+
+                        <div class="form-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <h3>User Details</h3>
+
+                                    <p>
+                                        Create the profile before
+                                        adding face embeddings.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <form
+                                id="enrollment-form"
+                                novalidate
+                            >
+
+                                <div class="form-group">
+
+                                    <label for="user-name">
+                                        Full Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="user-name"
+                                        name="name"
+                                        autocomplete="name"
+                                        placeholder="Enter full name"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="user-email">
+                                        Email Address
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        id="user-email"
+                                        name="email"
+                                        autocomplete="email"
+                                        placeholder="Enter email address"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="user-phone">
+                                        Phone Number
+                                    </label>
+
+                                    <input
+                                        type="tel"
+                                        id="user-phone"
+                                        name="phone"
+                                        autocomplete="tel"
+                                        inputmode="tel"
+                                        placeholder="Enter phone number"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="user-dob">
+                                        Date of Birth
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="user-dob"
+                                        name="date_of_birth"
+                                        autocomplete="bday"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <button
+                                    type="submit"
+                                    id="create-user-btn"
+                                    class="btn btn-primary btn-full"
+                                >
+                                    <i
+                                        class="fas fa-user-plus"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    Create User
+                                </button>
+
+
+                                <p
+                                    id="enrollment-form-message"
+                                    class="form-message"
+                                    role="status"
+                                    aria-live="polite"
+                                ></p>
+
+                            </form>
+
+                        </div>
+
+
+                        <!-- Face Enrollment -->
+
+                        <div class="face-enrollment-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <h3>Face Enrollment</h3>
+
+                                    <p>
+                                        Capture each pose to build
+                                        the user's face profile.
+                                    </p>
+                                </div>
+
+                                <span
+                                    id="enrollment-user-status"
+                                    class="status-badge"
+                                >
+                                    User not created
+                                </span>
+
+                            </div>
+
+
+                            <!-- Enrollment Camera -->
+
+                            <div class="enrollment-camera">
+
+                                <video
+                                    id="enrollment-video"
+                                    class="camera-video"
+                                    autoplay
+                                    muted
+                                    playsinline
+                                    aria-label="Enrollment camera preview"
+                                ></video>
+
+                                <img
+                                    id="enrollment-preview"
+                                    class="image-preview"
+                                    alt="Enrollment image preview"
+                                    hidden
+                                >
+
+                                <div
+                                    id="enrollment-camera-placeholder"
+                                    class="camera-placeholder"
+                                >
+
+                                    <i
+                                        class="fas fa-user-circle"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <strong>
+                                        Enrollment Workspace
+                                    </strong>
+
+                                    <span>
+                                        Camera preview will appear here.
+                                    </span>
+
+                                </div>
+
+                                <div
+                                    class="face-guide"
+                                    aria-hidden="true"
+                                ></div>
+
+                            </div>
+
+
+                            <!-- Pose Selection -->
+
+                            <div class="pose-section">
+
+                                <div class="pose-header">
+
+                                    <div>
+                                        <h4>Select Pose</h4>
+
+                                        <p>
+                                            Capture all six poses for
+                                            better recognition.
+                                        </p>
+                                    </div>
+
+                                    <span
+                                        id="pose-progress"
+                                        class="pose-progress"
+                                    >
+                                        0 / 6
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    id="pose-grid"
+                                    class="pose-grid"
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="pose-option active"
+                                        data-pose="CENTER"
+                                    >
+                                        <span class="pose-number">
+                                            01
+                                        </span>
+
+                                        <span class="pose-name">
+                                            Center
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="pose-option"
+                                        data-pose="LEFT"
+                                    >
+                                        <span class="pose-number">
+                                            02
+                                        </span>
+
+                                        <span class="pose-name">
+                                            Left
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="pose-option"
+                                        data-pose="RIGHT"
+                                    >
+                                        <span class="pose-number">
+                                            03
+                                        </span>
+
+                                        <span class="pose-name">
+                                            Right
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="pose-option"
+                                        data-pose="UP"
+                                    >
+                                        <span class="pose-number">
+                                            04
+                                        </span>
+
+                                        <span class="pose-name">
+                                            Up
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="pose-option"
+                                        data-pose="DOWN"
+                                    >
+                                        <span class="pose-number">
+                                            05
+                                        </span>
+
+                                        <span class="pose-name">
+                                            Down
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="pose-option"
+                                        data-pose="CENTER_2"
+                                    >
+                                        <span class="pose-number">
+                                            06
+                                        </span>
+
+                                        <span class="pose-name">
+                                            Center 2
+                                        </span>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Enrollment Controls -->
+
+                            <div class="camera-controls">
+
+                                <button
+                                    type="button"
+                                    id="enrollment-camera-btn"
+                                    class="btn btn-primary"
+                                >
+                                    <i
+                                        class="fas fa-video"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    Start Camera
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="enrollment-capture-btn"
+                                    class="btn btn-secondary"
+                                    disabled
+                                >
+                                    <i
+                                        class="fas fa-camera"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    Capture Pose
+                                </button>
+
+                            </div>
+
+
+                            <!-- Enrollment Upload -->
+
+                            <div class="upload-area">
+
+                                <input
+                                    type="file"
+                                    id="enrollment-image"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    hidden
+                                >
+
+                                <label
+                                    for="enrollment-image"
+                                    class="upload-dropzone compact"
+                                >
+
+                                    <i
+                                        class="fas fa-image"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <strong>
+                                        Upload pose image
+                                    </strong>
+
+                                    <span>
+                                        Use this if camera capture
+                                        is unavailable.
+                                    </span>
+
+                                    <small id="enrollment-file-name">
+                                        No file selected
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                id="enroll-pose-btn"
+                                class="btn btn-primary btn-full"
+                                disabled
+                            >
+                                <i
+                                    class="fas fa-face-smile"
+                                    aria-hidden="true"
+                                ></i>
+
+                                Enroll Selected Pose
+                            </button>
+
+
+                            <p
+                                id="enrollment-message"
+                                class="form-message"
+                                role="status"
+                                aria-live="polite"
+                            ></p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             HOW IT WORKS
+        ====================================================== -->
+
+        <section
+            id="how-it-works"
+            class="section how-it-works-section"
+        >
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <p class="eyebrow">
+                        HOW IT WORKS
+                    </p>
+
+                    <h2 class="section-title">
+                        From image to recognition.
+                    </h2>
+
+                    <span
+                        class="section-line"
+                        aria-hidden="true"
+                    ></span>
+
+                </div>
+
+
+                <div class="steps-grid">
+
+                    <!-- Step 01 -->
+
+                    <article class="step-card">
+
+                        <span class="step-number">
+                            01
+                        </span>
+
+                        <div class="step-icon">
+                            <i
+                                class="fas fa-camera"
+                                aria-hidden="true"
+                            ></i>
+                        </div>
+
+                        <h3>
+                            Capture
+                        </h3>
+
+                        <p>
+                            Capture a face using the camera or
+                            upload an image.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Step 02 -->
+
+                    <article class="step-card">
+
+                        <span class="step-number">
+                            02
+                        </span>
+
+                        <div class="step-icon">
+                            <i
+                                class="fas fa-brain"
+                                aria-hidden="true"
+                            ></i>
+                        </div>
+
+                        <h3>
+                            Analyze
+                        </h3>
+
+                        <p>
+                            InsightFace detects the face and
+                            generates a 512-dimensional embedding.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Step 03 -->
+
+                    <article class="step-card">
+
+                        <span class="step-number">
+                            03
+                        </span>
+
+                        <div class="step-icon">
+                            <i
+                                class="fas fa-fingerprint"
+                                aria-hidden="true"
+                            ></i>
+                        </div>
+
+                        <h3>
+                            Recognize
+                        </h3>
+
+                        <p>
+                            The embedding is compared against
+                            enrolled users using PostgreSQL and
+                            pgvector.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <p>
+                    © 2026 Vision Studio
+                </p>
+
+                <p>
+                    Built with computer vision and AI.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         BACK TO TOP
+    ========================================================== -->
+
+    <button
+        type="button"
+        id="back-to-top"
+        class="back-to-top"
+        aria-label="Back to top"
+        title="Back to top"
+    >
+        <i
+            class="fas fa-arrow-up"
+            aria-hidden="true"
+        ></i>
+    </button>
+
+
+    <!-- Main JavaScript -->
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
