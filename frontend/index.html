@@ -61,24 +61,30 @@
                 <div class="nav-links">
 
                     <a
-                        href="#home"
-                        class="nav-link active"
-                    >
-                        Home
-                    </a>
-
-                    <a
                         href="#recognition"
-                        class="nav-link"
+                        class="nav-link active"
+                        id="nav-link-recognition"
                     >
-                        Recognition
+                        Identify Face
                     </a>
 
                     <a
                         href="#enrollment"
                         class="nav-link"
+                        id="nav-link-enrollment"
                     >
-                        Enrollment
+                        Enroll Face
+                    </a>
+
+                    <a
+                        href="#filters"
+                        class="nav-link"
+                        id="nav-link-filters"
+                    >
+                        Filters Studio
+                        <span class="nav-badge" id="filters-nav-badge">
+                            <i class="fas fa-sparkles"></i>
+                        </span>
                     </a>
 
                 </div>
@@ -121,49 +127,88 @@
     <main>
 
         <!-- =====================================================
-             HERO
+             STUDIO STEPPER BAR (FLOW TRACKER)
         ====================================================== -->
-
-        <section class="hero">
+        <div class="studio-stepper-wrap">
             <div class="container">
-                <div class="hero-content">
+                <div class="flow-stepper-bar" role="tablist" aria-label="Studio progression">
 
-                    <p class="eyebrow">
-                        COMPUTER VISION PLATFORM
-                    </p>
+                    <button
+                        type="button"
+                        class="step-chip active"
+                        data-target="recognition"
+                        id="step-chip-recognition"
+                        role="tab"
+                        aria-selected="true"
+                    >
+                        <span class="step-num">1</span>
+                        <div class="step-info">
+                            <span class="step-title">Identify Face</span>
+                            <span class="step-sub">Recognize identity</span>
+                        </div>
+                    </button>
 
-                    <h1 class="hero-title">
-                        See. Recognize.
-                        <span>Understand.</span>
-                    </h1>
-
-                    <p class="hero-description">
-                        Real-time face recognition and enrollment
-                        powered by computer vision and AI.
-                    </p>
-
-                    <div class="hero-actions">
-                        <a href="#recognition" class="btn btn-primary">
-                            Start Recognition
-                        </a>
-
-                        <a href="#enrollment" class="btn btn-secondary">
-                            Enroll a User
-                        </a>
+                    <div class="step-divider" aria-hidden="true">
+                        <i class="fas fa-chevron-right"></i>
                     </div>
 
+                    <button
+                        type="button"
+                        class="step-chip"
+                        data-target="enrollment"
+                        id="step-chip-enrollment"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        <span class="step-num">2</span>
+                        <div class="step-info">
+                            <span class="step-title">Enroll Face</span>
+                            <span class="step-sub">6-pose registration</span>
+                        </div>
+                    </button>
+
+                    <div class="step-divider" aria-hidden="true">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="step-chip"
+                        data-target="filters"
+                        id="step-chip-filters"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        <span class="step-num"><i class="fas fa-wand-magic-sparkles"></i></span>
+                        <div class="step-info">
+                            <span class="step-title">Filters Studio</span>
+                            <span class="step-sub">ASCII & visual FX</span>
+                        </div>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero section hidden to prioritize immediate face identification view -->
+        <section class="hero" style="display: none;" aria-hidden="true">
+            <div class="container">
+                <div class="hero-content">
+                    <p class="eyebrow">COMPUTER VISION PLATFORM</p>
+                    <h1 class="hero-title">See. Recognize. <span>Understand.</span></h1>
+                    <p class="hero-description">Real-time face recognition and multi-pose enrollment.</p>
                 </div>
             </div>
         </section>
 
 
         <!-- =====================================================
-             RECOGNITION
+             RECOGNITION (STAGE 1)
         ====================================================== -->
 
         <section
             id="recognition"
-            class="section recognition-section"
+            class="section recognition-section studio-stage active"
         >
 
             <div class="container">
@@ -214,13 +259,25 @@
                                     </p>
                                 </div>
 
-                                <span
-                                    id="camera-status"
-                                    class="status-badge"
-                                >
-                                    Ready
-                                </span>
+                                <div class="header-actions">
+                                    <div class="camera-select-pill">
+                                        <i class="fas fa-video" aria-hidden="true"></i>
+                                        <select
+                                            id="recognition-camera-select"
+                                            class="camera-dropdown"
+                                            aria-label="Select camera device"
+                                        >
+                                            <option value="">Camera 1: Integrated Camera</option>
+                                        </select>
+                                    </div>
 
+                                    <span
+                                        id="camera-status"
+                                        class="status-badge"
+                                    >
+                                        Ready
+                                    </span>
+                                </div>
                             </div>
 
 
@@ -497,6 +554,44 @@
                                 aria-live="polite"
                             ></p>
 
+                            <div
+                                id="recognition-verified-banner"
+                                class="unlocked-banner"
+                                hidden
+                            >
+                                <div class="unlocked-icon">
+                                    <i class="fas fa-unlock-keyhole"></i>
+                                </div>
+                                <div class="unlocked-text">
+                                    <strong>Identity Verified!</strong>
+                                    <span>Creative visual filters are now unlocked.</span>
+                                </div>
+                                <button type="button" id="btn-verified-open-filters" class="btn btn-sm btn-primary btn-glow">
+                                    <i class="fas fa-wand-magic-sparkles"></i> Open Filters Studio &rarr;
+                                </button>
+                            </div>
+
+                            <!-- New User Callout: Prominent CTA to Enroll Face -->
+                            <div class="new-user-card" id="new-user-enroll-card">
+                                <div class="new-user-content">
+                                    <div class="new-user-badge">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="new-user-info">
+                                        <strong>New user? Enroll face</strong>
+                                        <span>Register your face across 6 poses to log biometric data and unlock filters.</span>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    id="btn-goto-enroll"
+                                    class="btn btn-outline btn-full btn-glow"
+                                >
+                                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                                    New User? Enroll Face
+                                </button>
+                            </div>
+
                         </aside>
 
                     </div>
@@ -509,15 +604,22 @@
 
 
         <!-- =====================================================
-             ENROLLMENT
+             ENROLLMENT (STAGE 2)
         ====================================================== -->
 
         <section
             id="enrollment"
-            class="section enrollment-section"
+            class="section enrollment-section studio-stage"
         >
 
             <div class="container">
+
+                <!-- Stage Nav Header: Back to Identification -->
+                <div class="stage-nav-bar">
+                    <button type="button" id="btn-back-to-recog" class="btn btn-outline btn-sm">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Face Identification
+                    </button>
+                </div>
 
                 <!-- Section Heading -->
 
@@ -686,12 +788,25 @@
                                     </p>
                                 </div>
 
-                                <span
-                                    id="enrollment-user-status"
-                                    class="status-badge"
-                                >
-                                    User not created
-                                </span>
+                                <div class="header-actions">
+                                    <div class="camera-select-pill">
+                                        <i class="fas fa-video" aria-hidden="true"></i>
+                                        <select
+                                            id="enrollment-camera-select"
+                                            class="camera-dropdown"
+                                            aria-label="Select camera device"
+                                        >
+                                            <option value="">Camera 1: Integrated Camera</option>
+                                        </select>
+                                    </div>
+
+                                    <span
+                                        id="enrollment-user-status"
+                                        class="status-badge"
+                                    >
+                                        User not created
+                                    </span>
+                                </div>
 
                             </div>
 
@@ -768,6 +883,16 @@
 
                                 </div>
 
+                                <div id="enrollment-guide-box" class="enrollment-guide-box">
+                                    <div class="guide-badge" id="guide-step-badge">
+                                        <i class="fas fa-arrows-to-dot" id="guide-icon"></i>
+                                        <span id="guide-step-number">Pose 1 of 6</span>
+                                    </div>
+                                    <div class="guide-instruction">
+                                        <strong id="guide-pose-title">Look Straight Ahead (Center)</strong>
+                                        <p id="guide-pose-desc">Keep your head centered and look directly into the camera with good lighting.</p>
+                                    </div>
+                                </div>
 
                                 <div
                                     id="pose-grid"
@@ -963,7 +1088,393 @@
                                 aria-live="polite"
                             ></p>
 
+                            <div
+                                id="enrollment-success-card"
+                                class="enrollment-success-card"
+                                hidden
+                            >
+                                <div class="success-icon-wrap">
+                                    <i class="fas fa-circle-check"></i>
+                                </div>
+                                <h4>Face Registration Complete!</h4>
+                                <p>All 6 poses (Center, Left, Right, Up, Down, Center) are registered & verified. Creative visual filters are unlocked.</p>
+                                <button type="button" id="enrollment-launch-filters-btn" class="btn btn-primary btn-glow">
+                                    <i class="fas fa-wand-magic-sparkles"></i> Launch Filters Studio &rarr;
+                                </button>
+                            </div>
+
                         </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FILTERS STUDIO (STAGE 3)
+        ====================================================== -->
+
+        <section
+            id="filters"
+            class="section filters-section studio-stage"
+        >
+
+            <div class="container">
+
+                <!-- Stage Nav Header: Back to Identification -->
+                <div class="stage-nav-bar">
+                    <button type="button" id="btn-filters-back-to-recog" class="btn btn-outline btn-sm">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Face Identification
+                    </button>
+                </div>
+
+                <!-- Section Heading -->
+                <div class="section-heading">
+
+                    <p class="eyebrow">
+                        CREATIVE CV PIPELINE
+                    </p>
+
+                    <h2 class="section-title">
+                        Filters Studio<span>.</span>
+                    </h2>
+
+                    <span
+                        class="section-line"
+                        aria-hidden="true"
+                    ></span>
+
+                    <p class="section-description">
+                        Real-time ASCII webcam art, cyberpunk matrix rain, neon edge contours, and retro visual filters.
+                    </p>
+
+                    <div
+                        id="filters-access-banner"
+                        class="filters-access-badge"
+                    >
+                        <i class="fas fa-sparkles" id="filters-access-icon"></i>
+                        <span id="filters-access-text">Verified mode active • Try the ASCII webcam and visual filters below.</span>
+                    </div>
+
+                </div>
+
+
+                <!-- Filters Workspace -->
+                <div class="workspace-card filters-workspace">
+
+                    <!-- Filter Preset Selector Chips -->
+                    <div class="filter-tabs-bar" role="tablist" aria-label="Visual Filters">
+
+                        <button
+                            type="button"
+                            class="filter-tab active"
+                            data-filter="ascii"
+                            role="tab"
+                            aria-selected="true"
+                        >
+                            <i class="fas fa-font" aria-hidden="true"></i>
+                            ASCII Art
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="filter-tab"
+                            data-filter="neon"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            <i class="fas fa-bolt" aria-hidden="true"></i>
+                            Neon Contour
+                        </button>
+
+                        <button
+                            type="button"
+                            class="filter-tab"
+                            data-filter="thermal"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            <i class="fas fa-fire" aria-hidden="true"></i>
+                            Thermal Heat
+                        </button>
+
+                        <button
+                            type="button"
+                            class="filter-tab"
+                            data-filter="retro"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            <i class="fas fa-gamepad" aria-hidden="true"></i>
+                            Retro 8-Bit
+                        </button>
+
+                        <button
+                            type="button"
+                            class="filter-tab"
+                            data-filter="halftone"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            <i class="fas fa-circle-dot" aria-hidden="true"></i>
+                            Pop Halftone
+                        </button>
+
+                    </div>
+
+
+                    <div class="filters-layout-grid">
+
+                        <!-- Main Screen / Viewport Panel -->
+                        <div class="filter-viewport-card">
+
+                            <div class="viewport-header">
+
+                                <div class="viewport-title-group">
+                                    <h3 id="current-filter-title">ASCII Art Webcam</h3>
+                                    <span id="filter-fps-badge" class="fps-pill">
+                                        <i class="fas fa-gauge-high"></i> 0.0 FPS
+                                    </span>
+                                </div>
+
+                                <div class="camera-select-pill">
+                                    <i class="fas fa-video" aria-hidden="true"></i>
+                                    <select
+                                        id="filter-camera-select"
+                                        class="camera-dropdown"
+                                        aria-label="Select filter camera"
+                                    >
+                                        <option value="">Camera 1: Integrated Camera</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Viewport Canvas Stage -->
+                            <div class="filter-canvas-stage" id="filter-stage">
+
+                                <!-- Hidden video feed element -->
+                                <video
+                                    id="filter-video"
+                                    autoplay
+                                    muted
+                                    playsinline
+                                    aria-hidden="true"
+                                    style="display: none;"
+                                ></video>
+
+                                <!-- Hardware-accelerated canvas for image processing -->
+                                <canvas
+                                    id="filter-canvas"
+                                    class="filter-canvas"
+                                    hidden
+                                ></canvas>
+
+                                <!-- Text output for ASCII mode (crisp monospace, selectable) -->
+                                <pre
+                                    id="ascii-display"
+                                    class="ascii-display"
+                                    hidden
+                                ></pre>
+
+                                <!-- Placeholder when camera is inactive -->
+                                <div
+                                    id="filter-placeholder"
+                                    class="camera-placeholder filter-placeholder"
+                                >
+                                    <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+                                    <strong>Filters Workspace</strong>
+                                    <span>Start the camera to activate real-time ASCII and visual effects.</span>
+                                </div>
+
+                                <!-- Overlay Guide / Watermark -->
+                                <div class="filter-watermark">
+                                    <span>VISION STUDIO • LIVE CV</span>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Primary Toolbar Controls -->
+                            <div class="filter-action-toolbar">
+
+                                <button
+                                    type="button"
+                                    id="filter-start-btn"
+                                    class="btn btn-primary"
+                                >
+                                    <i class="fas fa-video" aria-hidden="true"></i>
+                                    Start Camera
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="filter-freeze-btn"
+                                    class="btn btn-secondary"
+                                    disabled
+                                >
+                                    <i class="fas fa-pause" aria-hidden="true"></i>
+                                    Freeze
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="filter-copy-ascii-btn"
+                                    class="btn btn-outline"
+                                    disabled
+                                    title="Copy raw ASCII text to clipboard"
+                                >
+                                    <i class="fas fa-copy" aria-hidden="true"></i>
+                                    Copy ASCII
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="filter-download-txt-btn"
+                                    class="btn btn-outline"
+                                    disabled
+                                    title="Save as TXT file"
+                                >
+                                    <i class="fas fa-file-lines" aria-hidden="true"></i>
+                                    Save .TXT
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="filter-download-png-btn"
+                                    class="btn btn-outline"
+                                    disabled
+                                    title="Save as PNG image"
+                                >
+                                    <i class="fas fa-download" aria-hidden="true"></i>
+                                    Save .PNG
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="filter-fullscreen-btn"
+                                    class="btn btn-icon"
+                                    aria-label="Toggle Fullscreen"
+                                    title="Toggle Fullscreen"
+                                >
+                                    <i class="fas fa-expand" aria-hidden="true"></i>
+                                </button>
+
+                            </div>
+
+                            <p
+                                id="filter-message"
+                                class="form-message"
+                                role="status"
+                                aria-live="polite"
+                            ></p>
+
+                        </div>
+
+
+                        <!-- Parameters & Tuning Sidebar -->
+                        <aside class="filter-params-panel">
+
+                            <div class="panel-header">
+                                <div>
+                                    <h3>Effect Tuning</h3>
+                                    <p>Customize your filter in real-time.</p>
+                                </div>
+                            </div>
+
+                            <div class="filter-controls-group">
+
+                                <!-- Character Detail / Width Slider (ASCII) -->
+                                <div class="control-row" id="ctrl-ascii-width">
+                                    <div class="control-label-row">
+                                        <label for="ascii-resolution-slider" id="resolution-slider-label">
+                                            ASCII Resolution
+                                        </label>
+                                        <span id="ascii-resolution-val" class="control-val">90 chars</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        id="ascii-resolution-slider"
+                                        min="40"
+                                        max="160"
+                                        step="2"
+                                        value="90"
+                                    >
+                                </div>
+
+                                <!-- Contrast Boost -->
+                                <div class="control-row">
+                                    <div class="control-label-row">
+                                        <label for="filter-contrast-slider">
+                                            Contrast Boost
+                                        </label>
+                                        <span id="filter-contrast-val" class="control-val">1.2x</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        id="filter-contrast-slider"
+                                        min="0.8"
+                                        max="2.4"
+                                        step="0.1"
+                                        value="1.2"
+                                    >
+                                </div>
+
+                                <!-- Color Theme / Palette -->
+                                <div class="control-row">
+                                    <label for="filter-theme-select">
+                                        Color Palette
+                                    </label>
+                                    <select id="filter-theme-select" class="form-select">
+                                        <option value="matrix">Terminal Green (Classic)</option>
+                                        <option value="cyber">Cyberpunk Cyan</option>
+                                        <option value="amber">Amber Phosphor (CRT)</option>
+                                        <option value="mono">Monochrome White</option>
+                                        <option value="rgb">Full RGB Color</option>
+                                    </select>
+                                </div>
+
+                                <!-- Invert Switch -->
+                                <div class="control-toggle-row">
+                                    <label for="filter-invert-toggle">
+                                        Invert Luminance
+                                    </label>
+                                    <input
+                                        type="checkbox"
+                                        id="filter-invert-toggle"
+                                        class="toggle-checkbox"
+                                    >
+                                </div>
+
+                                <!-- Mirror Camera Switch -->
+                                <div class="control-toggle-row">
+                                    <label for="filter-mirror-toggle">
+                                        Mirror Feed (Selfie Mode)
+                                    </label>
+                                    <input
+                                        type="checkbox"
+                                        id="filter-mirror-toggle"
+                                        class="toggle-checkbox"
+                                        checked
+                                    >
+                                </div>
+
+                            </div>
+
+                            <!-- Live Character Map Legend (for ASCII) -->
+                            <div class="ascii-legend-card" id="ascii-legend">
+                                <span class="legend-title">ASCII Character Ramp</span>
+                                <code>[space] . : - = + * % # @</code>
+                                <small>Bright pixels map to high-density glyphs; dark areas create deep negative space.</small>
+                            </div>
+
+                        </aside>
 
                     </div>
 
@@ -981,6 +1492,8 @@
         <section
             id="how-it-works"
             class="section how-it-works-section"
+            style="display: none;"
+            aria-hidden="true"
         >
 
             <div class="container">

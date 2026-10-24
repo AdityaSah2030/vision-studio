@@ -2,17 +2,19 @@ import time
 
 import cv2
 
+from backend.app.config import settings
+
 
 class Camera:
     """Manage webcam capture for the Vision Studio CV pipeline."""
 
     def __init__(
         self,
-        camera_index: int = 0,
+        camera_index: int | None = None,
         width: int = 640,
         height: int = 480,
     ):
-        self.camera_index = camera_index
+        self.camera_index = camera_index if camera_index is not None else settings.camera_index
         self.width = width
         self.height = height
 
@@ -22,9 +24,17 @@ class Camera:
         )
 
         if not self.capture.isOpened():
-            raise RuntimeError(
-                f"Unable to open camera with index {self.camera_index}"
-            )
+            # If camera index 1 failed, try index 0 as fallback
+            fallback_index = 0 if self.camera_index != 0 else 1
+            fallback_cap = cv2.VideoCapture(fallback_index, cv2.CAP_DSHOW)
+            if fallback_cap.isOpened():
+                self.camera_index = fallback_index
+                self.capture = fallback_cap
+            else:
+                fallback_cap.release()
+                raise RuntimeError(
+                    f"Unable to open camera with index {self.camera_index}"
+                )
 
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)

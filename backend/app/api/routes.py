@@ -169,3 +169,34 @@ async def recognize_face(
         best_similarity=result.best_similarity,
         pose=result.pose,
     )
+
+
+@router.post("/filters/ascii")
+async def convert_to_ascii(
+    image: UploadFile = File(...),
+    width: int = 120,
+):
+    import cv2
+    import numpy as np
+    from backend.app.cv.ascii_filter import process_image_to_ascii
+
+    image_bytes = await image.read()
+    nparr = np.frombuffer(image_bytes, np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    if frame is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid image format. Could not decode image.",
+        )
+
+    # Restrict width between 40 and 240
+    clamped_width = max(40, min(240, width))
+    ascii_art = process_image_to_ascii(frame, width=clamped_width)
+    lines = ascii_art.split("\n")
+
+    return {
+        "ascii_text": ascii_art,
+        "width": clamped_width,
+        "height": len(lines),
+    }
